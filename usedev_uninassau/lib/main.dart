@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:usedev_uninassau/src/screens/initial_screen.dart';
+import 'package:usedev_uninassau/src/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'UseDev',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: InitialScreen(),
+      home: const LoginScreen(),
     );
   }
 }
