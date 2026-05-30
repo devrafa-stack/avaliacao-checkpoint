@@ -1,0 +1,30 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "usuario": "rafa",
+      "senha": "123456"
+    }
+  ],
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Camiseta Dev",
+      "preco": 89.90,
+      "descricao": "Camiseta exclusiva UseDev",
+      "image_url": "https://placehold.co/600x600.png",
+      "categoria": "Camisetas",
+      "estoque": 10
+    },
+    {
+      "id": 2,
+      "nome": "Moletom Gamer",
+      "preco": 159.90,
+      "descricao": "Moletom confortável para devs",
+      "image_url": "https://placehold.co/600x600.png",
+      "categoria": "Moletons",
+      "estoque": 5
+    }
+  ],
+  "carrinho": []
+}

@@ -8,7 +8,7 @@ class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
 
   @override
-  _InitialScreenState createState() => _InitialScreenState();
+  State<InitialScreen> createState() => _InitialScreenState(); // ✅ tipo público
 }
 
 class _InitialScreenState extends State<InitialScreen> {
@@ -16,10 +16,10 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu, size: 40),
+        leading: const Icon(Icons.menu, size: 40),
         title: Image.asset('assets/logo_usedev.png', height: 40),
         centerTitle: true,
-        actions: [
+        actions: const [
           Icon(Icons.person_outline, size: 40),
           SizedBox(width: 10),
           Icon(Icons.shopping_cart_outlined, size: 40),
@@ -29,20 +29,21 @@ class _InitialScreenState extends State<InitialScreen> {
       body: SingleChildScrollView(
         child: Column(
           spacing: 20,
-          crossAxisAlignment: .stretch,
+          crossAxisAlignment: CrossAxisAlignment.stretch, // ✅ nome completo
           children: [
-            HeroSectionWidget(),
+            const HeroSectionWidget(),
             Text(
               'Promos Especiais',
-              textAlign: .center,
+              textAlign: TextAlign.center, // ✅ nome completo
               style: TextStyle(
                 fontSize: 28,
-                fontWeight: .bold,
+                fontWeight: FontWeight.bold, // ✅ nome completo
                 fontFamily: GoogleFonts.orbitron().fontFamily,
               ),
             ),
             ListView.builder(
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(), // ✅ evita conflito de scroll
               itemCount: 5,
               itemBuilder: (context, index) => ProductCardWidget(
                 nome: 'Produto 0$index',
@@ -50,7 +51,7 @@ class _InitialScreenState extends State<InitialScreen> {
                 preco: '10$index,00',
               ),
             ),
-            SubscriptionSectionWidget(),
+            const SubscriptionSectionWidget(),
           ],
         ),
       ),
