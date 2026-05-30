@@ -7,6 +7,7 @@ class ProductCardWidget extends StatelessWidget {
     required this.url,
     required this.preco,
     this.onAddToCart,
+    this.onTap,
     super.key,
   });
 
@@ -14,10 +15,11 @@ class ProductCardWidget extends StatelessWidget {
   final String url;
   final String preco;
   final VoidCallback? onAddToCart;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    Widget cardContent = Card(
       margin: const EdgeInsets.all(20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       elevation: 5,
@@ -72,5 +74,14 @@ class ProductCardWidget extends StatelessWidget {
         ],
       ),
     );
+
+    if (onTap != null) {
+      return InkWell(
+        onTap: onTap,
+        child: cardContent,
+      );
+    }
+
+    return cardContent;
   }
 }
