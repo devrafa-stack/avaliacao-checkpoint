@@ -6,12 +6,14 @@ class ProductCardWidget extends StatelessWidget {
     required this.nome,
     required this.url,
     required this.preco,
+    this.onAddToCart,
     super.key,
   });
 
   final String nome;
   final String url;
   final String preco;
+  final VoidCallback? onAddToCart;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,24 @@ class ProductCardWidget extends StatelessWidget {
               ),
             ),
           ),
+          if (onAddToCart != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                onPressed: onAddToCart,
+                child: Text(
+                  'Adicionar ao carrinho',
+                  style: TextStyle(
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

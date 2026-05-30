@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:usedev_uninassau/src/screens/cart_screen.dart';
 import 'package:usedev_uninassau/src/screens/login_screen.dart';
 import 'package:usedev_uninassau/src/screens/initial_screen.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/home':  (context) => const InitialScreen(),
+        '/cart':  (context) => const CartScreen(),
       },
     );
   }
