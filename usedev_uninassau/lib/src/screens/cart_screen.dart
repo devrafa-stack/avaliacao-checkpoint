@@ -154,36 +154,22 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           const SizedBox(height: 14),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.remove_circle_outline),
-                                    onPressed: item.quantidade > 1 ? () => _decreaseQuantity(item) : null,
-                                  ),
-                                  Text(
-                                    '${item.quantidade}',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: GoogleFonts.poppins().fontFamily,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.add_circle_outline),
-                                    onPressed: () => _increaseQuantity(item),
-                                  ),
-                                ],
+                              IconButton(
+                                icon: const Icon(Icons.remove_circle_outline),
+                                onPressed: item.quantidade > 1 ? () => _decreaseQuantity(item) : null,
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                              Text(
+                                '${item.quantidade}',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: GoogleFonts.poppins().fontFamily,
                                 ),
-                                onPressed: () => _deleteItem(item),
-                                child: Text(
-                                  'Excluir',
-                                  style: TextStyle(fontFamily: GoogleFonts.poppins().fontFamily),
-                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.add_circle_outline),
+                                onPressed: () => _increaseQuantity(item),
                               ),
                             ],
                           ),

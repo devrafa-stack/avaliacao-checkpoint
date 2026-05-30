@@ -46,12 +46,17 @@ class _LoginScreenState extends State<LoginScreen> {
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: const Text('Já logado'),
           content: const Text(
             'Você já possui uma sessão ativa. Deseja continuar para a loja ou sair?',
           ),
-          actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          actionsPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 10,
+          ),
           actions: [
             TextButton(
               onPressed: () async {
@@ -70,13 +75,21 @@ class _LoginScreenState extends State<LoginScreen> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF780BF7),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
               ),
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.pushReplacementNamed(context, '/home');
               },
-              child: const Text('CONTINUAR'),
+              child: const Text(
+                'CONTINUAR',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );
@@ -127,7 +140,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.check_circle_outline, color: Color(0xFF00B16A)),
+                    const Icon(
+                      Icons.check_circle_outline,
+                      color: Color(0xFF00B16A),
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -142,15 +158,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-            Text(
-              'Use seu nome de usuário e senha para acessar a área de ofertas.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: GoogleFonts.poppins().fontFamily,
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ),
             const SizedBox(height: 10),
             _buildTextField(
               controller: _usernameController,
@@ -184,7 +191,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: const Text('Erro de Login'),
-                                content: const Text('Usuário ou senha inválidos.'),
+                                content: const Text(
+                                  'Usuário ou senha inválidos.',
+                                ),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
@@ -196,9 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         } catch (e) {
                           if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(e.toString())),
-                          );
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(e.toString())));
                         } finally {
                           if (mounted) setState(() => _carregando = false);
                         }
@@ -225,7 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'O campo usuário não precisa ser um email.',
+              'Esqueceu sua senha?',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: GoogleFonts.poppins().fontFamily,

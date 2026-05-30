@@ -80,13 +80,15 @@ class ProductDetailScreen extends StatelessWidget {
                         backgroundColor: const Color(0xFF780BF7),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                       ),
-                      icon: const Icon(Icons.add_shopping_cart),
+                      icon: const Icon(Icons.add_shopping_cart,color: Colors.white),
+                  
                       label: Text(
                         'Adicionar ao carrinho',
                         style: TextStyle(
                           fontFamily: GoogleFonts.poppins().fontFamily,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                       onPressed: () {
