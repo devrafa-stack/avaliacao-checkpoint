@@ -16,26 +16,31 @@ class ProductCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: .all(20),
+      margin: const EdgeInsets.all(20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
       elevation: 5,
       child: Column(
-        crossAxisAlignment: .stretch,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Image.network(url, height: 200, width: double.infinity, fit: .cover),
+          Image.asset(
+            url,
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
           Padding(
-            padding: .symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Text(
               nome,
               style: TextStyle(
                 fontSize: 25,
-                fontWeight: .bold,
+                fontWeight: FontWeight.bold,
                 fontFamily: GoogleFonts.orbitron().fontFamily,
               ),
             ),
           ),
           Padding(
-            padding: .symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Text(
               preco,
               style: TextStyle(

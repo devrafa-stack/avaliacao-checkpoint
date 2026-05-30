@@ -8,10 +8,18 @@ class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
 
   @override
-  State<InitialScreen> createState() => _InitialScreenState(); // ✅ tipo público
+  State<InitialScreen> createState() => _InitialScreenState();
 }
 
 class _InitialScreenState extends State<InitialScreen> {
+  final List<Map<String, String>> produtos = [
+    {'nome': 'Bone UseDev',    'imagem': 'assets/bone.png',     'preco': 'R\$ 49,90'},
+    {'nome': 'Caneca Dev',     'imagem': 'assets/caneca.png',   'preco': 'R\$ 39,90'},
+    {'nome': 'Capivara Gamer', 'imagem': 'assets/capivara.png', 'preco': 'R\$ 89,90'},
+    {'nome': 'Chaveiro Dev',   'imagem': 'assets/chaveiro.png', 'preco': 'R\$ 19,90'},
+    {'nome': 'Mousepad XL',    'imagem': 'assets/mousepad.png', 'preco': 'R\$ 59,90'},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,26 +37,26 @@ class _InitialScreenState extends State<InitialScreen> {
       body: SingleChildScrollView(
         child: Column(
           spacing: 20,
-          crossAxisAlignment: CrossAxisAlignment.stretch, // ✅ nome completo
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const HeroSectionWidget(),
             Text(
               'Promos Especiais',
-              textAlign: TextAlign.center, // ✅ nome completo
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 28,
-                fontWeight: FontWeight.bold, // ✅ nome completo
+                fontWeight: FontWeight.bold,
                 fontFamily: GoogleFonts.orbitron().fontFamily,
               ),
             ),
             ListView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(), // ✅ evita conflito de scroll
-              itemCount: 5,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: produtos.length,
               itemBuilder: (context, index) => ProductCardWidget(
-                nome: 'Produto 0$index',
-                url: 'https://placehold.co/600x600.png',
-                preco: '10$index,00',
+                nome: produtos[index]['nome']!,
+                url: produtos[index]['imagem']!,
+                preco: produtos[index]['preco']!,
               ),
             ),
             const SubscriptionSectionWidget(),
