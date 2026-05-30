@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:usedev_uninassau/src/models/cart_item.dart';
+import 'package:usedev_uninassau/src/services/auth_service.dart';
 import 'package:usedev_uninassau/src/services/cart_service.dart';
 
 class CartScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final CartService _cartService = CartService();
+  final AuthService _authService = AuthService();
 
   String get _cartTotal {
     final total = _cartService.items.fold<double>(
@@ -36,6 +38,33 @@ class _CartScreenState extends State<CartScreen> {
   void _decreaseQuantity(CartItem item) {
     setState(() {
       _cartService.decreaseQuantity(item.nome);
+    });
+  }
+
+  Future<void> _finalizePurchase(BuildContext context) async {
+    final loggedIn = await _authService.isLoggedIn();
+    if (!loggedIn) {
+      if (!context.mounted) return;
+      Navigator.pushReplacementNamed(context, '/login');
+      return;
+    }
+
+    if (!context.mounted) return;
+    await showDialog<void>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Compra finalizada'),
+        content: const Text('Parabéns! Sua compra foi finalizada com sucesso.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+    setState(() {
+      _cartService.clear();
     });
   }
 
@@ -167,25 +196,53 @@ class _CartScreenState extends State<CartScreen> {
             ),
       bottomNavigationBar: cartItems.isEmpty
           ? null
-          : Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          : SafeArea(
+              minimum: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Itens: ${_cartService.totalItems}',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
+                  Container(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Itens: ${_cartService.totalItems}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                          ),
+                        ),
+                        Text(
+                          'Total: $_cartTotal',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
-                    'Total: $_cartTotal',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                        ),
+                        onPressed: () => _finalizePurchase(context),
+                        child: Text(
+                          'Finalizar Compra',
+                          style: TextStyle(
+                            fontFamily: GoogleFonts.poppins().fontFamily,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],

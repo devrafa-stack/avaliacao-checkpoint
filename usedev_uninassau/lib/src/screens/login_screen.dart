@@ -14,6 +14,75 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final _authService = AuthService();
   bool _carregando = false;
+  bool _alreadyLoggedIn = false;
+  bool _hasShownTokenDialog = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _verifyLoginStatus();
+  }
+
+  Future<void> _verifyLoginStatus() async {
+    final loggedIn = await _authService.isLoggedIn();
+    if (!mounted) return;
+    setState(() {
+      _alreadyLoggedIn = loggedIn;
+    });
+
+    if (loggedIn && !_hasShownTokenDialog) {
+      _hasShownTokenDialog = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _showAlreadyLoggedDialog();
+        }
+      });
+    }
+  }
+
+  Future<void> _showAlreadyLoggedDialog() async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: const Text('Já logado'),
+          content: const Text(
+            'Você já possui uma sessão ativa. Deseja continuar para a loja ou sair?',
+          ),
+          actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await _authService.logout();
+                if (!mounted) return;
+                setState(() {
+                  _alreadyLoggedIn = false;
+                });
+              },
+              child: const Text(
+                'SAIR',
+                style: TextStyle(color: Color(0xFFB00020)),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF780BF7),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/home');
+              },
+              child: const Text('CONTINUAR'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -47,6 +116,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: const Color(0xFF340E9C),
               ),
             ),
+            if (_alreadyLoggedIn)
+              Container(
+                margin: const EdgeInsets.only(top: 18),
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEEFBF7),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFF00B16A)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check_circle_outline, color: Color(0xFF00B16A)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Já existe um token salvo. Você está logado.',
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.poppins().fontFamily,
+                          fontSize: 14,
+                          color: const Color(0xFF1F6F51),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             Text(
               'Use seu nome de usuário e senha para acessar a área de ofertas.',
               textAlign: TextAlign.center,
