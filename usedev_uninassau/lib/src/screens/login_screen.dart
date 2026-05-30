@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +12,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _authService = AuthService();
+  bool _carregando = false;
 
   @override
   void dispose() {
@@ -69,7 +72,42 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 56,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: _carregando
+                    ? null
+                    : () async {
+                        setState(() => _carregando = true);
+                        try {
+                          final sucesso = await _authService.login(
+                            _usernameController.text.trim(),
+                            _passwordController.text.trim(),
+                          );
+                          if (!context.mounted) return;
+                          if (sucesso) {
+                            Navigator.pushReplacementNamed(context, '/home');
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Erro de Login'),
+                                content: const Text('Usuário ou senha inválidos.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(e.toString())),
+                          );
+                        } finally {
+                          if (mounted) setState(() => _carregando = false);
+                        }
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF780BF7),
                   shape: RoundedRectangleBorder(
@@ -77,15 +115,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                child: Text(
-                  'Entrar',
-                  style: TextStyle(
-                    fontFamily: GoogleFonts.poppins().fontFamily,
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: _carregando
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : Text(
+                        'Entrar',
+                        style: TextStyle(
+                          fontFamily: GoogleFonts.poppins().fontFamily,
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
             ),
             const SizedBox(height: 12),
@@ -141,7 +181,10 @@ class _LoginScreenState extends State<LoginScreen> {
               borderRadius: BorderRadius.circular(50),
               borderSide: const BorderSide(color: Color(0xFF780BF7)),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 16,
+            ),
           ),
         ),
       ],
